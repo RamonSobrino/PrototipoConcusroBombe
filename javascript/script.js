@@ -4,12 +4,38 @@ var markerSelected;
 var markers = [];
 const tiposComida = new Set();
 
+var auxProporcion = 256;
+var capaMostrada = true;
+	
+var WMS_URL = 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?';
+var WMS_Layers = 'Catastro';
+var map;
+var markersArray = [];
+var overlayWMS
+var TileWMS = function(coord,zoom) {
+  var proj = map.getProjection(); 
+  var zfactor = Math.pow(2, zoom); 
+  var top = proj.fromPointToLatLng(new google.maps.Point(coord.x * auxProporcion / zfactor, coord.y * auxProporcion / zfactor) ); 
+  var bot = proj.fromPointToLatLng(new google.maps.Point((coord.x + 1) * auxProporcion / zfactor, (coord.y + 1) * auxProporcion / zfactor)); 
+  var bbox = top.lng() + "," + bot.lat() + "," + bot.lng() + "," + top.lat();
+  
+  var myURL= WMS_URL + "service=wms&srs=epsg:4326&request=getmap&width="+auxProporcion+"&height="+auxProporcion+"&format=image/png&TRANSPARENT=TRUE";
+  myURL+="&layers="+WMS_Layers;
+  myURL+="&bbox="+bbox;
+  
+  return myURL;
+
+  
+}
+
+
+
 function initMap() {
 
     var gastroMateo = new google.maps.LatLng(43.361365, -5.851818);
     var misOpciones = {
         center: gastroMateo,
-        zoom: 10,
+        zoom: 15,
         streetViewControl: false,
         disableDefaultUI: true,
         minZoom: 10,
@@ -20,6 +46,14 @@ function initMap() {
         misOpciones);
 
     agregarMarcadores(sitios)
+
+    var overlayOptions =
+    {
+        getTileUrl: TileWMS,
+        tileSize: new google.maps.Size(auxProporcion, auxProporcion)
+    };
+      overlayWMS = new google.maps.ImageMapType(overlayOptions);
+      map.overlayMapTypes.push(overlayWMS);
 
     tiposComida.forEach(element => {
         var x = document.getElementById("comboxBox");
@@ -37,6 +71,16 @@ function agregarMarcadores(sitiosFiltrados) {
             tiposComida.add(element);
         });
     });
+}
+
+function eliminarCapa(){
+    if(capaMostrada){
+     map.overlayMapTypes.pop();
+     capaMostrada=false
+    }else{
+        map.overlayMapTypes.push(overlayWMS);
+        capaMostrada=true
+    }
 }
 
 function filtrarSitios(tipoComida) {
