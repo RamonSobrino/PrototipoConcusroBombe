@@ -2,7 +2,7 @@ var map;
 var poly;
 var markerPosReal;
 var circulos = [];
-var Markers = [];
+var markers = [];
 var puntuacionTotal = 0;
 var contadorSitios = 0;
 const tiposComida = new Set();
@@ -23,12 +23,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("map"),
         misOpciones);
 
-    sitios.forEach((element, index) => {
-        addMarker(new google.maps.LatLng(element.coordenadas[0], element.coordenadas[1]), index);
-        element.tipo.forEach(element => {
-            tiposComida.add(element);
-        });
-    });
+  agregarMarcadores(sitios)
 
     tiposComida.forEach(element => {
         var x = document.getElementById("comboxBox");
@@ -42,8 +37,27 @@ function initMap() {
 
 }
 
+function agregarMarcadores(sitiosFiltrados){
+    sitiosFiltrados.forEach((element, index) => {
+        addMarker(new google.maps.LatLng(element.coordenadas[0], element.coordenadas[1]), index);
+        element.tipo.forEach(element => {
+            tiposComida.add(element);
+        });
+    });
+}
+
 function filtrarSitios(selectedIndex){
-    var 
+    
+    this.markers.forEach(element =>{
+        element.setMap(null);
+    })
+
+    var sitiosFiltrados = sitios.filter(element =>{
+        return element.tipo.includes(selectedIndex)
+    })
+    agregarMarcadores(sitiosFiltrados);
+
+
 }
 
 
@@ -70,7 +84,7 @@ function addMarker(location, index) {
         infowindow.open(this.map, marker);
     });
 
-    makers.add(marker);
+    this.markers.push(marker);
 
 }
 
