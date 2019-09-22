@@ -32,7 +32,7 @@ function initMap() {
 
 function agregarMarcadores(sitiosFiltrados) {
     sitiosFiltrados.forEach(element => {
-        addMarker(new google.maps.LatLng(...element.coordenadas), element.nombre);
+        addMarker(element);
         element.tipo.forEach(element => {
             tiposComida.add(element);
         });
@@ -52,13 +52,13 @@ function filtrarSitios(tipoComida) {
 }
 
 
-function addMarker(location, nombre) {
+function addMarker(element) {
 
     let marker = new google.maps.Marker({
-        position: location,
+        position: new google.maps.LatLng(...element.coordenadas),
         map: map,
         label: {
-            text: nombre,
+            text: element.nombre,
             color: '#FFFFFF',
             fontWeight: 'bold',
         },
@@ -73,12 +73,14 @@ function addMarker(location, nombre) {
         };
 
         service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request, callback);
+        service.nearbySearch(request, (results, status) => {
+            callback(results, status, element.url)
+        });
     });
     this.markers.push(marker);
 }
 
-function callback(results, status) {
+function callback(results, status, url) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         console.log(results);
 
@@ -90,13 +92,16 @@ function callback(results, status) {
                 types.includes('bar')) {
                 new google.maps.InfoWindow({
                     content: `<div id="content">
-                        <h5>${place.name} (${place.rating})</h5>
-                        <div class="text-center">
-                            <img src="${place.photos && place.photos.length > 0 ? place.photos[0].getUrl() : ''}"width="300" height="150"></img>
-                        </div>
-                        <div>
-                            <p class="mt-2">${place.vicinity}</p>
-                        </div></div>`
+                            <h5>${place.name} (${place.rating})</h5>
+                            <div>
+                                <img src="${place.photos && place.photos.length > 0 ? place.photos[0].getUrl() : ''}"width="300" height="150"></img>
+                            </div>
+                            <div class="row justify-content-between py-2">
+                                <p class="m-0">${place.vicinity}</p>
+                                <span class=" badge ${place.opening_hours && place.opening_hours.open_now ? 'badge-success' : 'badge-danger'}">${place.opening_hours && place.opening_hours.open_now ? 'Abierto' : 'Cerrado'}</span>
+                            </div>
+                            <p><a href="${url}" target="_blank">Más información...</a></p>
+                        </div>`
                 }).open(map, markerSelected);
             }
         }
