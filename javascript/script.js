@@ -4,7 +4,7 @@ var markerSelected;
 var poly;
 var markerPosReal;
 var circulos = [];
-var makers = [];
+var markers = [];
 var puntuacionTotal = 0;
 var contadorSitios = 0;
 const tiposComida = new Set();
@@ -25,12 +25,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("map"),
         misOpciones);
 
-    sitios.forEach((element, index) => {
-        addMarker(new google.maps.LatLng(element.coordenadas[0], element.coordenadas[1]), index);
-        element.tipo.forEach(element => {
-            tiposComida.add(element);
-        });
-    });
+    agregarMarcadores(sitios)
 
     tiposComida.forEach(element => {
         var x = document.getElementById("comboxBox");
@@ -40,8 +35,26 @@ function initMap() {
     });
 }
 
+
+function agregarMarcadores(sitiosFiltrados) {
+    sitiosFiltrados.forEach((element, index) => {
+        addMarker(new google.maps.LatLng(element.coordenadas[0], element.coordenadas[1]), index);
+        element.tipo.forEach(element => {
+            tiposComida.add(element);
+        });
+    });
+}
+
 function filtrarSitios(selectedIndex) {
 
+    this.markers.forEach(element => {
+        element.setMap(null);
+    })
+
+    var sitiosFiltrados = sitios.filter(element => {
+        return element.tipo.includes(selectedIndex)
+    })
+    agregarMarcadores(sitiosFiltrados);
 }
 
 
@@ -63,9 +76,7 @@ function addMarker(location, index) {
         service = new google.maps.places.PlacesService(map);
         service.nearbySearch(request, callback);
     });
-
-    makers.push(marker);
-
+    this.markers.push(marker);
 }
 
 function callback(results, status) {
