@@ -93,7 +93,7 @@ function callback(results, status, url) {
                 new google.maps.InfoWindow({
                     content: `<div id="content">
                             <h5>${place.name} (${place.rating})</h5>
-                            <div>
+                            <div class="text-center">
                                 <img src="${place.photos && place.photos.length > 0 ? place.photos[0].getUrl() : ''}"width="300" height="150"></img>
                             </div>
                             <div class="row justify-content-between py-2">

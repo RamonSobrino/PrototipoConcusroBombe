@@ -26,6 +26,22 @@ body {
   min-width: 400px;
 }
 
+.principal #titulo {
+  position: absolute;
+  z-index: 10;
+  left: 10px;
+  top: 10px;
+  min-width: 400px;
+}
+
+.principal .card {
+  background-color: rgba(256, 256, 256, 0.9);
+}
+
+.principal select {
+  background-color: rgba(256, 256, 256, 0.1);
+}
+
 .custom-label {
   color: "#FFFFFF";
   -webkit-text-stroke: 1px #000000;
