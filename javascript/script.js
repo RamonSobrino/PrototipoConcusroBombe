@@ -9,10 +9,10 @@ function initMap() {
     var gastroMateo = new google.maps.LatLng(43.361365, -5.851818);
     var misOpciones = {
         center: gastroMateo,
-        zoom: 15,
+        zoom: 10,
         streetViewControl: false,
         disableDefaultUI: true,
-        minZoom: 14,
+        minZoom: 10,
         maxZoom: 19,
         mapTypeId: google.maps.MapTypeId.SATELLITE
     };
