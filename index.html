@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <meta charset="utf-8">
-    <script src="data/restaurante.js"></script>
-    <script src="javascript/script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap&key=AIzaSyBBuTWSKy10uEV62uHCjKARr9HU8bqLjqM&libraries=geometry,places"
-            async defer></script>
+  <title>Simple Map</title>
+  <meta name="viewport"
+        content="initial-scale=1.0">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="css/style.css">
+  <meta charset="utf-8">
+  <script src="data/restaurante.js"></script>
+  <script src="javascript/script.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?callback=initMap&key=AIzaSyBBuTWSKy10uEV62uHCjKARr9HU8bqLjqM&libraries=geometry,places"
+          async
+          defer></script>
 
 </head>
+
 <body>
+  <main class="principal">
+    <div id="map"></div>
 
-<h1>Consurso del bombe</h1>
+    <div id="opciones">
 
-<div class="principal">
-<div id="map"></div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Filtros</h5>
+          <div class="card-text">
+            <div class="row">
+              <label class="col-6 col-form-label px-0">Tipo de comida</label>
+              <select id="comboxBox"
+                      class="col-6 form-control"
+                      onchange="filtrarSitios(this.value)">
+                <option value="Todas">Todas</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div id="foto">
-    <select id="comboxBox" onchange="if (this.selectedIndex) filtrarSitios(this.value);">
-      </select>
-
-</div>
-</div>
-<footer>
-</footer>
+    </div>
+  </main>
 </body>
+
 </html>

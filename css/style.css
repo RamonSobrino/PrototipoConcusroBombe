@@ -1,32 +1,26 @@
-.principal{
-    height: 80%;
-    display: flex;
-    width: 95%;
+html,
+body {
+  height: 100vh;
+  margin: 0;
 }
 
-#map {
-    height: 100%;
-    width: 78%;
+.row {
+  margin: 0 !important;
 }
 
-
-#foto{
-    width: 20%;
-    margin-left: 2em;
+.principal {
+  height: 100vh;
+  width: 100vw;
 }
 
-#imagen img{
-    width: 100%;
+.principal #map {
+  height: 100vh;
+  width: 100vw;
 }
 
-#botones {    
-    display: flex;
-    flex-direction: column;
-}
-
-/* Optional: Makes the sample page fill the window. */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+.principal #opciones {
+  position: absolute;
+  z-index: 10;
+  right: 10px;
+  top: 10px;
 }
