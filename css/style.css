@@ -23,4 +23,10 @@ body {
   z-index: 10;
   right: 10px;
   top: 10px;
+  min-width: 400px;
+}
+
+.custom-label {
+  color: "#FFFFFF";
+  -webkit-text-stroke: 1px #000000;
 }

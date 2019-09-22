@@ -32,7 +32,7 @@ function initMap() {
 
 function agregarMarcadores(sitiosFiltrados) {
     sitiosFiltrados.forEach(element => {
-        addMarker(new google.maps.LatLng(...element.coordenadas));
+        addMarker(new google.maps.LatLng(...element.coordenadas), element.nombre);
         element.tipo.forEach(element => {
             tiposComida.add(element);
         });
@@ -52,11 +52,16 @@ function filtrarSitios(tipoComida) {
 }
 
 
-function addMarker(location) {
+function addMarker(location, nombre) {
 
     let marker = new google.maps.Marker({
         position: location,
-        map: map
+        map: map,
+        label: {
+            text: nombre,
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+        },
     });
 
     google.maps.event.addListener(marker, 'click', function (event) {
@@ -75,17 +80,22 @@ function addMarker(location) {
 
 function callback(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
+        console.log(results);
+
         for (var i = 0; i < results.length; i++) {
             let place = results[i];
             let types = place.types;
-            if (types.indexOf('restaurant') !== -1 ||
-                types.indexOf('cafe') !== -1 ||
-                types.indexOf('bar') !== -1) {
+            if (types.includes('restaurant') ||
+                types.includes('cafe') ||
+                types.includes('bar')) {
                 new google.maps.InfoWindow({
-                    content: `<div id="content"><div id="siteNotice"></div>
+                    content: `<div id="content">
                         <h5>${place.name} (${place.rating})</h5>
-                        <div id="bodyContent">
-                            <p>${place.vicinity}</p>
+                        <div class="text-center">
+                            <img src="${place.photos && place.photos.length > 0 ? place.photos[0].getUrl() : ''}"width="300" height="150"></img>
+                        </div>
+                        <div>
+                            <p class="mt-2">${place.vicinity}</p>
                         </div></div>`
                 }).open(map, markerSelected);
             }
