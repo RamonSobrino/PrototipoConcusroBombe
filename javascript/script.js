@@ -9,7 +9,6 @@ var puntuacionTotal = 0;
 var contadorSitios = 0;
 const tiposComida = new Set();
 
-
 function initMap() {
 
     var gastroMateo = new google.maps.LatLng(43.361365, -5.851818);
